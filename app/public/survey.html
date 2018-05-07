@@ -14,12 +14,14 @@
     <!-- Font Awesome Glyphicons -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9"
         crossorigin="anonymous">
-
+    
+    <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
         crossorigin="anonymous"></script>
 
     <script>$(document).ready(function () {
             $('select').formSelect();
+            $('.modal').modal();
         });</script>
 
 </head>
@@ -66,7 +68,6 @@
             <option value="5">5 (Strongly Agree)</option>
         </select>
 
-
         <h5>Question 3</h5>
         <h6>You find it easy to stay relaxed and focused even when there is some pressure.</h6>
         <select class="chosen-select" id="q3">
@@ -77,7 +78,6 @@
             <option value="4">4</option>
             <option value="5">5 (Strongly Agree)</option>
         </select>
-
 
         <h5>Question 4</h5>
         <h6>You rarely do something just out of sheer curiosity.</h6>
@@ -90,7 +90,6 @@
             <option value="5">5 (Strongly Agree)</option>
         </select>
 
-
         <h5>Question 5</h5>
         <h6>People can rarely upset you.</h6>
         <select class="chosen-select" id="q5">
@@ -102,7 +101,6 @@
             <option value="5">5 (Strongly Agree)</option>
         </select>
 
-
         <h5>Question 6</h5>
         <h6>It is often difficult for you to relate to other people’s feelings.</h6>
         <select class="chosen-select" id="q6">
@@ -113,7 +111,6 @@
             <option value="4">4</option>
             <option value="5">5 (Strongly Agree)</option>
         </select>
-
 
         <h5>Question 7</h5>
         <h6>In a discussion, truth should be more important than people’s sensitivities.</h6>
@@ -180,30 +177,18 @@
             </div>
     </footer>
 
-    <!-- Modal -->
-    <div id="results-modal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h3 class="modal-title">
-                        Best Match
-                    </h3>
-                </div>
-                <div class="modal-body">
-                    <h3 id="match-name"></h3>
-                    <img id="match-img" src="https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/6/005/064/1bd/3435aa3.jpg" alt="">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-
+    <!-- Modal Structure -->
+    <div id="results-modal" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <h4>Best Match</h4>
+            <p id="match-name"></p>
+            <img id="match-img">
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">OK</a>
         </div>
     </div>
-
+    
     <script type="text/javascript">
 
         // Capture the form inputs
@@ -220,7 +205,6 @@
                 });
 
                 $(".chosen-select").each(function () {
-
                     if ($(this).val() === "") {
                         isValid = false;
                     }
@@ -252,11 +236,12 @@
                 $.post("/api/friends", userData, function (data) {
 
                     // Grab the result from the AJAX post so that the best match's name and photo are displayed.
+
                     $("#match-name").text(data.name);
                     $("#match-img").attr("src", data.photo);
 
                     // Show the modal with the best match
-                    $("#results-modal").modal("toggle");
+                    $("#results-modal").modal("open")
 
                 });
             } else {
